@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Search, Menu, X, Leaf } from 'lucide-react';
+import { Menu, X, Leaf } from 'lucide-react'; // Removed 'Search' import
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,15 +24,17 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <NavLink to="/" className={navLinkClass}>Home</NavLink>
             <NavLink to="/blog" className={navLinkClass}>Blog</NavLink>
+            {/* 👇 Added Photography Link */}
+            <NavLink to="/photography" className={navLinkClass}>Photography</NavLink>
             <NavLink to="/about" className={navLinkClass}>About</NavLink>
+            
             <Link to="/contact">
               <button className="px-5 py-2.5 rounded-lg border-2 border-emerald-600 text-emerald-600 font-medium hover:bg-emerald-600 hover:text-white transition-all">
                 Contact
               </button>
             </Link>
-            <button className="text-gray-400 hover:text-emerald-600">
-              <Search size={20} />
-            </button>
+            
+            {/* 🗑️ REMOVED Search Button here */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -49,6 +51,8 @@ const Navbar = () => {
         <div className="md:hidden bg-white border-t border-gray-100 py-4 px-4 flex flex-col space-y-4">
           <NavLink to="/" onClick={() => setIsOpen(false)} className={navLinkClass}>Home</NavLink>
           <NavLink to="/blog" onClick={() => setIsOpen(false)} className={navLinkClass}>Blog</NavLink>
+          {/* 👇 Added Photography Link for Mobile */}
+          <NavLink to="/photography" onClick={() => setIsOpen(false)} className={navLinkClass}>Photography</NavLink>
           <NavLink to="/about" onClick={() => setIsOpen(false)} className={navLinkClass}>About</NavLink>
           <Link to="/contact" onClick={() => setIsOpen(false)} className="text-emerald-600 font-medium">Contact Us</Link>
         </div>

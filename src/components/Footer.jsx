@@ -1,6 +1,6 @@
 import React from 'react';
-import { Leaf, Twitter, Facebook, Instagram } from 'lucide-react';
-
+import { Leaf, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer className="bg-[#1a1a2e] text-slate-300 py-16">
@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-xl font-bold">Bookish</span>
             </div>
             <p className="text-sm leading-relaxed text-slate-400">
-              Exploring the intersection of nature, mindfulness, and creativity. Join us on a journey through the greenest parts of the world.
+              A platform known for thoughtful, readable, and engaging stories.
             </p>
           </div>
 
@@ -24,7 +24,14 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li><a href="/" className="hover:text-emerald-400 transition-colors">Home</a></li>
               <li><a href="/blog" className="hover:text-emerald-400 transition-colors">Articles</a></li>
-              <li><a href="#" className="hover:text-emerald-400 transition-colors">Photography</a></li>
+               <li><NavLink 
+    to="/photography" 
+    className={({ isActive }) => 
+      `transition-colors hover:text-emerald-400 ${isActive ? 'text-emerald-400 font-semibold' : 'text-white-600'}`
+    }
+  >
+    Photography
+  </NavLink></li>
               <li><a href="/about" className="hover:text-emerald-400 transition-colors">About Us</a></li>
             </ul>
           </div>
@@ -42,13 +49,13 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Connect</h3>
             <div className="flex space-x-4">
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-emerald-600 transition-colors">
+              <a href="https://x.com/AdesojiOkiki" target="_blank" className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-emerald-600 transition-colors">
                 <Twitter size={16} />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-emerald-600 transition-colors">
-                <Facebook size={16} />
+              <a href="https://www.linkedin.com/in/okikiade-adesoji-b731971ab/" target='_blank' className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                <Linkedin size={16} />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-emerald-600 transition-colors">
+              <a href="https://www.instagram.com/okikiadeadesoji/" target='_blank' className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center hover:bg-emerald-600 transition-colors">
                 <Instagram size={16} />
               </a>
             </div>

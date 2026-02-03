@@ -9,24 +9,29 @@ const Home = () => {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    api.getArticles().then(setArticles);
+    api.getArticles().then(allData => {
+      // 👇 NEW: Filter out 'Image posts' immediately
+      // Now 'articles' will ONLY contain Articles, Poems, and Stories
+      const textPosts = allData.filter(post => post.category !== 'Image posts');
+      setArticles(textPosts);
+    });
   }, []);
 
+  // Now this will always be the latest TEXT post (Article/Poem/Story)
   const featuredArticle = articles[0]; 
 
   return (
     <div className="min-h-screen bg-gray-50">
       
       {/* Hero Section */}
-      {/* 1. Changed height to min-h to prevent overflow if content is huge */}
       <section className="relative min-h-[500px] flex items-center">
         <div className="absolute inset-0 z-0">
+          {/* You can keep this static image, OR use {featuredArticle?.image || "default_url"} if you want the hero to match the post */}
           <img 
             src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560" 
             alt="Forest" 
             className="w-full h-full object-cover"
           />
-          {/* 2. Darker overlay on mobile (bg-black/50) for readability */}
           <div className="absolute inset-0 bg-black/50 md:bg-gradient-to-r md:from-black/70 md:to-transparent" />
         </div>
         
@@ -36,18 +41,17 @@ const Home = () => {
               Featured Post
             </span>
             
-            {/* 3. Smaller Title on Mobile (text-3xl) vs Desktop (text-5xl) */}
             <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">
               {featuredArticle?.title || "The Silence of the Ancient Forest"}
             </h1>
             
-            {/* 4. VISUAL CLAMP: Limits text to 3 lines on mobile, 4 on desktop */}
             <p className="text-base md:text-lg text-gray-200 mb-6 md:mb-8 leading-relaxed line-clamp-3 md:line-clamp-4">
               {featuredArticle?.excerpt}
             </p>
             
+            {/* Added check: Only show button if we actually have an ID */}
             <Link 
-              to={`/blog/${featuredArticle?.id || 1}`}
+              to={featuredArticle ? `/blog/${featuredArticle.id}` : '/blog'}
               className="inline-flex items-center bg-white text-emerald-900 px-6 py-3 rounded-full font-semibold hover:bg-emerald-50 transition-colors"
             >
               Read Full Story <ArrowRight className="ml-2" size={20} />
@@ -69,6 +73,7 @@ const Home = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* slice(1) still works: it skips the Featured Post and shows the next ones */}
           {articles.slice(1).map(article => (
             <ArticleCard key={article.id} article={article} />
           ))}
@@ -99,7 +104,6 @@ const Home = () => {
               </button>
             </div>
           </div>
-          {/* Decorative blurred circles */}
           <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-teal-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-x-1/2 translate-y-1/2"></div>
         </div>

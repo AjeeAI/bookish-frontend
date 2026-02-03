@@ -17,8 +17,8 @@ const About = () => {
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             <div className="w-full md:w-1/3">
               <img 
-                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2670&auto=format&fit=crop" 
-                alt="Elena" 
+                src="https://res.cloudinary.com/driliwdn7/image/upload/v1769913491/1767302407551_viamf1.png" 
+                alt="Okikiade" 
                 className="w-full rounded-2xl shadow-md transform -rotate-2 hover:rotate-0 transition-transform duration-300"
               />
             </div>
@@ -26,11 +26,11 @@ const About = () => {
               <h2 className="text-2xl font-bold text-slate-900 mb-4">Hello, I'm Okikiade.</h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  I started Bookish as a digital garden—a place to plant ideas about nature, creativity, and the slower pace of life.
+                  I write about real life: often the strange parts people usually ignore.
+My articles cover everything from unruly neighbours and paid protesters to the quiet chaos of being blocked by WhatsApp for absolutely no reason. Some pieces are humorous, others critical, but all are rooted in observation, storytelling, and clarity.
+I focus on everyday experiences, social oddities, and digital-age frustrations, turning ordinary situations into engaging, readable narratives that connect with a wide audience
                 </p>
-                <p>
-                  My background is in environmental science and creative writing. I believe that the two fields are not mutually exclusive; in fact, they are deeply intertwined. Science gives us the 'how', but art gives us the 'why'.
-                </p>
+                
               </div>
             </div>
           </div>
@@ -43,7 +43,13 @@ const About = () => {
                 <h3 className="font-bold text-lg">Our Mission</h3>
               </div>
               <p className="text-emerald-700 text-sm leading-relaxed">
-                To cultivate a community that appreciates the quiet beauty of the natural world through words and images.
+                This website is dedicated to publishing writing that is relatable, observant, and enjoyable to read.
+
+
+
+
+
+
               </p>
             </div>
 
@@ -53,7 +59,7 @@ const About = () => {
                 <h3 className="font-bold text-lg">What We Cover</h3>
               </div>
               <p className="text-indigo-700 text-sm leading-relaxed">
-                From scientific articles about forestry to haiku collections and nature photography galleries.
+                We cover stories drawn from everyday life, social interactions, and the realities of modern living.
               </p>
             </div>
           </div>

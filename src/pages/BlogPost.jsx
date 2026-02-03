@@ -47,10 +47,10 @@ const BlogPost = () => {
             </p>
           </div>
 
-          <div className="prose prose-emerald max-w-none text-gray-600 leading-relaxed space-y-4">
-            <p>
+          <div className="prose prose-emerald max-w-none text-gray-600 leading-relaxed space-y-4 whitespace-pre-wrap">
+            
               {article.content}
-            </p>
+            
             
           </div>
 

@@ -6,9 +6,27 @@ import {
 } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/driliwdn7/image/upload";
+const UPLOAD_PRESET = "bookish_image"; // e.g., 'blog_images'
 const articlesCollection = collection(db, "articles");
 
 export const api = {
+
+  uploadImage: async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    const response = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error("Image upload failed");
+
+    const data = await response.json();
+    return data.secure_url; // Returns the internet URL of the image
+  },
   // --- PUBLIC: READ ARTICLES ---
   getArticles: async () => {
     // Query documents ordered by date
@@ -59,11 +77,42 @@ export const api = {
   },
 
   // --- EXTRAS ---
-  sendMessage: async (formData) => {
-    // Just save messages to a "messages" collection
-    await addDoc(collection(db, "messages"), {
-      ...formData,
-      sent_at: serverTimestamp()
+  sendMessage: async (contactData) => {
+    try {
+      await addDoc(collection(db, "messages"), {
+        firstName: contactData.firstName, 
+      lastName: contactData.lastName,
+      
+      email: contactData.email,
+      subject: contactData.subject,
+      message: contactData.message,
+      sent_at: new Date() // Adds a timestamp automatically so you know when it was sent
+      });
+    } catch (error) {
+      console.error("Error saving message:", error);
+      throw error; // Re-throw so the UI knows it failed
+    }
+  },
+
+  // 1. Get all messages (Newest first)
+  getMessages: async () => {
+    const querySnapshot = await getDocs(collection(db, "messages"));
+    const messages = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    // Sort by date (assuming sent_at is a Timestamp)
+    return messages.sort((a, b) => (b.sent_at?.seconds || 0) - (a.sent_at?.seconds || 0));
+  },
+
+  // 2. Delete a message
+  deleteMessage: async (id) => {
+    await deleteDoc(doc(db, "messages", id));
+  },
+
+  markAsRead: async (id) => {
+    await updateDoc(doc(db, "messages", id), {
+      read: true
     });
   },
   
