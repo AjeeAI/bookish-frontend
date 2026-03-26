@@ -2,7 +2,7 @@
 import { db, auth } from "../firebase-config";
 import { 
   collection, getDocs, getDoc, doc, addDoc, updateDoc, deleteDoc, 
-  query, orderBy, serverTimestamp 
+  query, orderBy, serverTimestamp, where
 } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -117,11 +117,25 @@ export const api = {
   },
   
   subscribeNewsletter: async (email) => {
+    if (!email) throw new Error("Email required");
+
+    // 1. Create a query to find if this email already exists
+    const q = query(collection(db, "subscribers"), where("email", "==", email));
+    
+    // 2. Execute the query
+    const querySnapshot = await getDocs(q);
+
+    // 3. If query is not empty, it means the email exists
+    if (!querySnapshot.empty) {
+      throw new Error("ALREADY_SUBSCRIBED");
+    }
+    
+    // 4. If not found, add to 'subscribers' collection
     await addDoc(collection(db, "subscribers"), {
-      email,
-      joined_at: serverTimestamp()
+      email: email,
+      joined_at: new Date()
     });
-  }
+  },
 };
 
 

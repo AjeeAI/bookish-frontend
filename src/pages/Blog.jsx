@@ -3,30 +3,37 @@ import { useLocation } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { api } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
+import Skeleton from '../components/Skeleton'; // 👈 1. Import Skeleton
 
 const Blog = () => {
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true); // 👈 2. Add Loading State
   const [filter, setFilter] = useState('All');
   
-  // 1. REMOVED 'Image posts' from this list so no button appears for it
   const categories = ['All', 'Articles', 'Poems', 'Stories'];
 
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(location.state?.initialSearch || ''); 
 
   useEffect(() => {
-    api.getArticles().then(setArticles);
+    // 👈 3. Update Fetch Logic to handle loading
+    const fetchData = async () => {
+      try {
+        const data = await api.getArticles();
+        setArticles(data);
+      } catch (error) {
+        console.error("Failed to load articles", error);
+      } finally {
+        setLoading(false); // Stop loading whether success or fail
+      }
+    };
+    fetchData();
   }, []);
 
-  // 2. NEW: Create a "Clean List" that excludes Photography
-  // This ensures Image posts NEVER show up on this page, even under "All"
   const textBasedArticles = articles.filter(article => article.category !== 'Image posts');
 
   const filteredArticles = textBasedArticles.filter(article => {
-    // Check Category (using the clean list)
     const matchesCategory = filter === 'All' || article.category === filter;
-
-    // Check Search
     const searchLower = searchQuery.toLowerCase();
     const matchesSearch = article.title.toLowerCase().includes(searchLower) || 
                           (article.excerpt && article.excerpt.toLowerCase().includes(searchLower));
@@ -77,15 +84,44 @@ const Blog = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.length > 0 ? (
+          
+          {/* 👇 4. CONDITIONAL RENDERING */}
+          {loading ? (
+            // SKELETON LOADING STATE (Shows 6 fake cards)
+            [...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 h-full flex flex-col">
+                {/* Fake Image Area */}
+                <Skeleton className="h-48 w-full mb-4 rounded-xl" />
+                
+                {/* Fake Content Area */}
+                <div className="flex-1 space-y-3">
+                   {/* Date/Category */}
+                   <div className="flex gap-2">
+                     <Skeleton className="h-4 w-20 rounded-full" />
+                     <Skeleton className="h-4 w-24 rounded-full" />
+                   </div>
+                   
+                   {/* Title */}
+                   <Skeleton className="h-6 w-3/4 rounded-md" />
+                   
+                   {/* Excerpt Lines */}
+                   <Skeleton className="h-4 w-full rounded-md" />
+                   <Skeleton className="h-4 w-2/3 rounded-md" />
+                </div>
+              </div>
+            ))
+          ) : filteredArticles.length > 0 ? (
+            // ACTUAL CONTENT
             filteredArticles.map(article => (
               <ArticleCard key={article.id} article={article} />
             ))
           ) : (
+            // EMPTY STATE
             <div className="col-span-full text-center text-gray-500 py-12">
               No articles found matching your search.
             </div>
           )}
+
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import { Loader, Camera } from 'lucide-react';
+import { Camera } from 'lucide-react';
+import Skeleton from '../components/Skeleton'; // 👈 Import it
 
 const Photography = () => {
   const [photos, setPhotos] = useState([]);
@@ -21,12 +22,6 @@ const Photography = () => {
     fetchPhotos();
   }, []);
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Loader className="animate-spin text-emerald-600" size={32} />
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gray-50 pt-12 pb-20">
       <div className="max-w-7xl mx-auto px-4">
@@ -40,7 +35,15 @@ const Photography = () => {
             </p>
         </div>
 
-        {photos.length > 0 ? (
+        {/* 👇 UPDATED LOADING STATE */}
+        {loading ? (
+           // Render a grid of 6 Skeletons
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+             {[...Array(6)].map((_, index) => (
+               <Skeleton key={index} className="h-96 w-full shadow-sm" />
+             ))}
+           </div>
+        ) : photos.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {photos.map((photo) => (
                <div 
@@ -53,17 +56,13 @@ const Photography = () => {
                     className="w-full h-full object-cover transform md:group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
                   />
-                  
-                  {/* 👇 UPDATED OVERLAY SECTION */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent 
                                   transition-opacity duration-300 flex flex-col justify-end p-6
                                   opacity-100 md:opacity-0 md:group-hover:opacity-100">
-                                  
                      <h3 className="text-white font-bold text-xl transition-transform duration-300
                                     translate-y-0 md:translate-y-4 md:group-hover:translate-y-0">
                         {photo.title}
                      </h3>
-                     
                      <p className="text-gray-300 text-sm mt-1 transition-transform duration-300 delay-75
                                    translate-y-0 md:translate-y-4 md:group-hover:translate-y-0">
                         {new Date(photo.created_at?.toDate ? photo.created_at.toDate() : photo.created_at).toLocaleDateString()}

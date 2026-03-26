@@ -15,6 +15,9 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute'; 
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Cookies from './pages/Cookies';
 
 // 2. Define a "Public Layout" Component
 // This wrapper holds the Navbar and Footer
@@ -45,11 +48,14 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/photography" element={<Photography />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/privacy-policy" element={<Privacy/>} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/cookies" element={<Cookies />} />
         </Route>
 
         {/* 4. GROUP 2: Admin Routes (No Layout) */}
         {/* These routes will typically look different and won't show the public Nav/Footer */}
+        <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/admin" element={<Admin />} />
         </Route>
