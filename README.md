@@ -1,16 +1,97 @@
-# React + Vite
+# Bookish
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Bookish** is a modern, full-stack storytelling and blog platform built with **React**, **Vite**, and **Tailwind CSS**. It features a sleek public-facing website for readers and a secure, comprehensive admin dashboard for content management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+### Public Website
+* **Dynamic Home Page**: Displays a featured hero post and a grid of the latest writings with custom loading skeletons.
+* **Newsletter Subscription**: Integrated signup system using Firestore that checks for duplicate subscribers and provides instant feedback via modals.
+* **Categorized Content**: Support for multiple content types including Articles, Poems, Stories, and Image-based posts.
+* **Contact System**: Dedicated contact form that saves messages directly to a "messages" collection in Firestore.
+* **Seamless Navigation**: Includes a responsive Navbar, Footer, and automatic "Scroll to Top" functionality on route changes.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Admin Dashboard
+* **Secure Authentication**: Protected routes using Firebase Auth and a `ProtectedRoute` wrapper to restrict access to the `/admin` path.
+* **Article Management (CRUD)**: A complete interface to write, update, and delete posts with real-time data refreshing.
+* **Advanced Image Uploads**: Supports uploading files directly via Cloudinary or using external URLs, with specific logic to handle Google Drive image links.
+* **Inbox Management**: An admin-only tab to read, mark as read, delete, and directly reply to reader inquiries.
+* **Interactive Notifications**: Uses a custom `ConfirmModal` for dangerous actions like deletions and to confirm successful publications.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+* **Frontend**: [React 19](https://react.dev/), [Vite](https://vitejs.dev/), [Tailwind CSS 4](https://tailwindcss.com/).
+* **State & Routing**: [React Router 7](https://reactrouter.com/), [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction).
+* **Backend/Database**: [Firebase (Firestore & Auth)](https://firebase.google.com/).
+* **Media Storage**: [Cloudinary](https://cloudinary.com/) (integrated via the API service).
+* **Icons**: [Lucide React](https://lucide.dev/).
+
+---
+
+## 📁 Project Structure
+
+```text
+bookish-frontend/
+├── src/
+│   ├── components/         # Reusable UI elements
+│   │   ├── admin/          # Dashboard tabs (ArticlesTab, InboxTab)
+│   │   └── ...             # Navbar, Footer, Modal, Skeleton, ArticleCard
+│   ├── pages/              # Main route components (Home, Blog, Admin, Login, etc.)
+│   ├── services/           # API and Firebase logic (api.js, firebase-config.js)
+│   ├── App.jsx             # Route definitions and Public/Admin layouts
+│   └── main.jsx            # Entry point
+├── firebase.json           # Hosting and rewrite rules
+└── package.json            # Dependencies and scripts
+
+⚙️ Setup & Installation
+1. Prerequisites
+Node.js (LTS version)
+
+A Firebase project with Firestore and Authentication enabled
+
+A Cloudinary account for media uploads
+
+2. Installation
+
+git clone <your-repo-url>
+cd bookish-frontend
+npm install
+
+
+3. Environment Configuration
+Update your Firebase credentials in src/firebase-config.js:
+
+Configure your Firebase credentials in src/firebase-config.js. You will need your:
+
+apiKey
+
+authDomain
+
+projectId
+
+storageBucket
+
+messagingSenderId
+
+appId
+
+4. Start the development server:
+
+npm run dev
+
+📜 Available Scripts
+npm run dev: Runs the app in development mode with HMR.
+
+npm run build: Builds the app for production to the dist folder.
+
+npm run lint: Runs ESLint to check for code quality issues.
+
+npm run preview: Locally previews the production build.
+
+
+🔒 Security
+Admin routes are protected via a ProtectedRoute component that verifies the user's authentication status through Firebase Auth before allowing access to the /admin path.
